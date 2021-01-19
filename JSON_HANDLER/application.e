@@ -14,15 +14,11 @@ create
 
 feature {NONE} -- Initialization
 
-	json_manager : JSON_MANAGER
+	terminal : TERMINAL
 
 	make
 		do
-			create json_manager.make
-			json_manager.load_file ("Resources/Integrantes.csv")
-			json_manager.save_to_hash("Prueba")
-			json_manager.save_to_hash("Prueba1")
-			json_manager.collections.print_hash
+			create terminal.make
 		end
 
 end
