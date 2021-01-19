@@ -52,7 +52,7 @@ feature -- Functions
 
     do
     	across file_by_line as line loop
-		    print(line.item + "%N")
+		    io.put_string(line.item + "%N")
 		end
 
     end

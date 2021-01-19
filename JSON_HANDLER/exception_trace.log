@@ -1,0 +1,38 @@
+
+ec: PANIC: Unexpected harmful signal (Segmentation violation) ...
+
+ec: system execution failed.
+Following is the set of recorded exceptions.
+NB: The raised panic may have induced completely inconsistent information:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+EB_KERNEL           root's creation @440   Unexpected harmful signal (Segmentation violation):
+<000001B8B10783E8>                         Eiffel run-time panic.        Bye
+-------------------------------------------------------------------------------
+
+ec: dumping core to generate debugging information...
+
+ec: PANIC CASCADE: Unexpected harmful signal (Segmentation violation) -- Giving up...
+
+ec: PANIC: Unexpected harmful signal (Segmentation violation) ...
+
+ec: system execution failed.
+Following is the set of recorded exceptions.
+NB: The raised panic may have induced completely inconsistent information:
+
+******************************** Thread exception *****************************
+In thread           Root thread            0x0 (thread id)
+*******************************************************************************
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+EB_KERNEL           root's creation @347   Unexpected harmful signal (Segmentation violation):
+<0000015B64BC03E8>                         Eiffel run-time panic.        Bye
+-------------------------------------------------------------------------------
+
+ec: dumping core to generate debugging information...

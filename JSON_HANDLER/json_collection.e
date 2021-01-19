@@ -144,10 +144,10 @@ feature --Functions
 	print_collection
 
 	    do
-	    	print("Collection: " +identifier + "%N")
+	    	io.put_string("Collection: " +identifier + "%N")
 	    	across documents as document loop
-			    print(document.item.representation + "%N")
+			    io.put_string(document.item.representation + "%N")
 			end
-			print("End of Collection"+"%N")
+			io.put_string("End of Collection"+"%N")
 	    end
 end
