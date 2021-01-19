@@ -1,0 +1,8 @@
+-STACK:5000000 -NODEFAULTLIB:libc -STACK:5000000 -NODEFAULTLIB:libc -SUBSYSTEM:CONSOLE -OUT:json_handler.exe 
+e1\emain.obj 
+"D:\IDEs\EiffelStudio\studio\spec\win64\lib\msc_vc140\mtwkbench.lib" 
+USER32.lib WS2_32.lib ADVAPI32.lib GDI32.lib SHELL32.lib MSIMG32.lib COMDLG32.lib UUID.lib OLE32.lib OLEAUT32.lib COMCTL32.lib MPR.LIB SHLWAPI.LIB WINSPOOL.LIB "c:\users\nacho\onedrive\documentos\eiffel user files\20.11\precomp\spec\win64\EIFGENs\base-scoop-safe\W_code\msc_vc140\precomp.lib" 
+json_handler.res 
+E1\eparents.obj E1\einit.obj E1\ececil.obj E1\evisib.obj E1\enames.obj 
+E1\eskelet.obj E1\eplug.obj E1\ecall.obj E1\efrozen.obj E1\epattern.obj 
+E1\eoption.obj C1\Cobj1.lib 
