@@ -148,6 +148,6 @@ feature --Functions
 	    	across documents as document loop
 			    print(document.item.representation + "%N")
 			end
-			print("End of Collection")
+			print("End of Collection"+"%N")
 	    end
 end

@@ -26,7 +26,7 @@ feature -- Functions
 		do
 			file_manager.read_file(path)
 			print("File loaded succesfully!!"+"%N")
-			file_manager.print_file
+			--file_manager.print_file
 		end
 -- ====================================================================================
 	save_to_hash(identifier : STRING)
@@ -36,7 +36,13 @@ feature -- Functions
 
 		do
 			create temp_collection.make (file_manager.file_by_line,identifier)
+			if collections.add_collection (temp_collection)
+			then
+			    print("Colleciton added successfully"+ "%N")
+			else
+			    print("Colleciton already exists in HashTable"+ "%N")
+			end
 
-			temp_collection.print_collection
 		end
+-- ====================================================================================
 end
