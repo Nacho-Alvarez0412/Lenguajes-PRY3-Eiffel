@@ -44,14 +44,16 @@ feature --Functions
 		end
 -- ====================================================================================
 	is_in_hash(identifier : STRING) : BOOLEAN
+	local
+		flag : BOOLEAN
 	do
+		flag := False
 		across identifiers as id loop
    			if id.item.is_equal (identifier) then
-   				RESULT := TRUE
-   			else
-   				RESULT := FALSE
+   				flag := TRUE
    			end
 		end
+		RESULT:= flag
 	end
 -- ====================================================================================
 	print_hash
@@ -60,4 +62,24 @@ feature --Functions
 			collection.item.print_collection
 		end
 	end
+
+-- ====================================================================================
+	get_colleciton_quantity() : INTEGER
+		    local
+		    	max : INTEGER
+		    do
+		    	max := 0
+		    	across collections as e loop
+				    max := max +1
+				end
+				RESULT := max
+		    end
+-- ====================================================================================
+	print_elements (a_list: LIST[STRING])
+				-- Print every elements on `a_list`
+			do
+				across a_list as ic loop
+					print (ic.item.out + "%N")
+				end
+			end
 end

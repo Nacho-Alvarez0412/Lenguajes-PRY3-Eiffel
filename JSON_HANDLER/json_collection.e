@@ -107,6 +107,7 @@ feature --Functions
 			end
 			RESULT := max
 	    end
+
 -- ====================================================================================
 	get_bool_values(string: STRING) : BOOLEAN
 
@@ -150,4 +151,12 @@ feature --Functions
 			end
 			io.put_string("End of Collection"+"%N")
 	    end
+-- ====================================================================================
+	print_elements (a_list: LIST[STRING])
+				-- Print every elements on `a_list`
+			do
+				across a_list as ic loop
+					print (ic.item.out + "%N")
+				end
+			end
 end

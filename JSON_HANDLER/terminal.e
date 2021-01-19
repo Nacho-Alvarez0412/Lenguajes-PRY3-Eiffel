@@ -89,8 +89,18 @@ feature -- Functions
 
 			identifier := words.at (2)
 			path := words.at (3)
-			json_manager.load_file (path)
-			json_manager.save_to_hash (identifier)
+			if json_manager.collections.is_in_hash (identifier) then
+				Io.new_line
+				Io.put_string ("Collection already exists in the data set...")
+
+			else
+				json_manager.load_file (path)
+				json_manager.save_to_hash (identifier)
+			end
+			json_manager.reset_load
+			Io.new_line
+			Io.put_string ("Number of collections in data set: ")
+			io.put_integer (json_manager.collections.get_colleciton_quantity)
 		end
 -- ====================================================================================
 	get_words(string : STRING) : ARRAYED_LIST [STRING]
