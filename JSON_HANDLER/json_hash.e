@@ -43,6 +43,41 @@ feature --Functions
 			end
 		end
 -- ====================================================================================
+
+	get_collection(identifier : STRING) : JSON_COLLECTION
+	local
+		res : JSON_COLLECTION
+		index : INTEGER
+		do
+			create res.make_empty
+			if is_in_hash(identifier)
+			then
+				index := get_index_of(identifier)
+				res := collections.at (index)
+			end
+			RESULT := res
+		end
+-- ====================================================================================
+	get_index_of(identifier : STRING): INTEGER
+	local
+		i : INTEGER
+		cont : INTEGER
+
+		do
+			cont := 1
+
+			across collections as collection loop
+			    if collection.item.identifier.is_equal (identifier)
+			    then
+			    	i := cont
+			    else
+			    	cont := cont + 1
+			    end
+			end
+			RESULT := i
+		end
+
+-- ====================================================================================
 	is_in_hash(identifier : STRING) : BOOLEAN
 	local
 		flag : BOOLEAN

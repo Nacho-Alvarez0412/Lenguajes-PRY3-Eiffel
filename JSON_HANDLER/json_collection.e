@@ -8,7 +8,8 @@ class
 	JSON_COLLECTION
 
 create
-	make
+	make,
+	make_empty
 
 feature  -- Initialization
 
@@ -26,6 +27,13 @@ feature  -- Initialization
 			create identifier.make_from_string (id)
 			file_by_line := collection_info
 			create_collection
+		end
+
+	make_empty
+		do
+			create documents.make (0)
+			create file_by_line.make(0)
+			create identifier.make_from_string ("")
 		end
 
 
@@ -151,6 +159,21 @@ feature --Functions
 			end
 			io.put_string("End of Collection"+"%N")
 	    end
+-- ====================================================================================
+	get_collection_as_string : STRING
+	local
+		text : STRING
+
+		do
+			create text.make_empty
+			text.append("["+"%N")
+	    	across documents as document loop
+			    text.append(document.item.representation +","+ "%N")
+			end
+			text.remove_tail (2)
+			text.append("%N"+"]")
+			RESULT := text
+		end
 -- ====================================================================================
 	print_elements (a_list: LIST[STRING])
 				-- Print every elements on `a_list`

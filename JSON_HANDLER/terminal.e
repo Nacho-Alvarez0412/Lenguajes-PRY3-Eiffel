@@ -41,7 +41,7 @@ feature -- Functions
 			if Io.last_integer = 1 then
 				load_csv_menu
 			elseif Io.last_integer = 2 then
-				print("about to save a JSON file")
+				save_json_menu
 			elseif Io.last_integer = 3 then
 				print("about to load a csv file")
 			elseif Io.last_integer = 4 then
@@ -49,7 +49,8 @@ feature -- Functions
 			elseif Io.last_integer = 5 then
 				print("about to project a JSON")
 			elseif Io.last_integer = 6 then
-				print("Quitting")
+				Io.new_line
+				Io.put_string ("Quitting...")
 			else
 				print("Invalid option selected")
 			end
@@ -77,6 +78,52 @@ feature -- Functions
 			Io.new_line
 			start_menu
 		end
+
+-- ====================================================================================
+	save_json_menu
+		do
+			Io.new_line
+			Io.new_line
+			Io.new_line
+			Io.put_string ("SAVE A JSON FILE %N")
+			Io.new_line
+			Io.put_string ("For usage execute the command with the following syntax... %N")
+			Io.put_string ("save [Name of structure] [Storage Path] %N")
+			Io.new_line
+			Io.new_line
+			Io.put_string ("Enter command: ")
+			Io.read_line
+			get_save_json_values
+			Io.new_line
+			Io.new_line
+			Io.put_string ("Press any key to go back to start menu...")
+			Io.read_line
+			Io.new_line
+			Io.new_line
+			start_menu
+		end
+
+-- ====================================================================================
+	get_save_json_values
+	local
+		path : STRING
+		identifier : STRING
+		words : ARRAYED_LIST [STRING]
+		temp_collection : JSON_COLLECTION
+		do
+			create words.make(0)
+			words := get_words(io.last_string)
+
+			identifier := words.at (2)
+			path := words.at (3)
+			temp_collection := json_manager.collections.get_collection(identifier)
+			json_manager.file_manager.write_file(path,temp_collection.get_collection_as_string)
+			Io.new_line
+			Io.put_string("Saving collection as a JSON file at: "+path)
+
+
+		end
+
 -- ====================================================================================
 	get_load_values
 	local

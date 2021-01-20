@@ -48,6 +48,19 @@ feature -- Functions
 	      my_file.close
     end
 -- ====================================================================================
+	write_file(output_path:STRING ; content:STRING )
+	local
+		output_file: PLAIN_TEXT_FILE
+
+
+		do
+	        create output_file.make_open_write (output_path)
+
+	        output_file.putstring (content)
+
+	        output_file.close
+        end
+-- ====================================================================================
     print_file
 
     do
