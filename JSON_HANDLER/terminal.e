@@ -43,7 +43,7 @@ feature -- Functions
 			elseif Io.last_integer = 2 then
 				save_json_menu
 			elseif Io.last_integer = 3 then
-				print("about to load a csv file")
+				save_csv_menu
 			elseif Io.last_integer = 4 then
 				print("about to realize a query")
 			elseif Io.last_integer = 5 then
@@ -69,7 +69,7 @@ feature -- Functions
 			Io.new_line
 			Io.put_string ("Enter command: ")
 			Io.read_line
-			get_save_csv_values
+			get_load_values
 			Io.new_line
 			Io.new_line
 			Io.put_string ("Press any key to go back to start menu...")
@@ -113,7 +113,7 @@ feature -- Functions
 			Io.put_string ("SAVE A CSV FILE %N")
 			Io.new_line
 			Io.put_string ("For usage execute the command with the following syntax... %N")
-			Io.put_string ("save [Name of structure] [Storage Path] %N")
+			Io.put_string ("savecsv [Name of structure] [Storage Path] %N")
 			Io.new_line
 			Io.new_line
 			Io.put_string ("Enter command: ")
@@ -163,7 +163,8 @@ feature -- Functions
 			identifier := words.at (2)
 			path := words.at (3)
 			temp_collection := json_manager.collections.get_collection(identifier)
-			json_manager.file_manager.write_file(path,temp_collection.get_collection_as_string_csv)
+			temp_collection.get_collection_as_string_csv
+			--json_manager.file_manager.write_file(path,temp_collection.get_collection_as_string_csv)
 			Io.new_line
 			Io.put_string("Saving collection as a JSON file at: "+path)
 

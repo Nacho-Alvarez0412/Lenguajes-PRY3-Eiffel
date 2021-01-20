@@ -176,19 +176,41 @@ feature --Functions
 		end
 
 -- ====================================================================================
-	get_collection_as_string_csv : STRING
+	get_collection_as_string_csv
 	local
 		text : STRING
+		headers : ARRAYED_LIST[STRING]
+		types : ARRAYED_LIST[STRING]
 
 		do
 			create text.make_empty
-	    	across documents as document loop
-			    text.append(document.item.representation +","+ "%N")
-			end
-			text.remove_tail (2)
-			text.append("%N"+"]")
-			RESULT := text
+			create headers.make (0)
+			create types.make (0)
+
+			headers := get_headers
+	    	print_elements(headers)
 		end
+-- ====================================================================================		
+		get_headers : ARRAYED_LIST[STRING]
+		local
+			temp_document : JSON_OBJECT
+
+			do
+				temp_document := documents.at (1)
+				RESULT := to_string_array(temp_document.current_keys)
+			end
+-- ====================================================================================
+	to_string_array (a_list: ARRAY[JSON_STRING]) : ARRAYED_LIST[STRING]
+	local
+		list : ARRAYED_LIST[STRING]
+				-- Print every elements on `a_list`
+			do
+				create list.make(0)
+				across a_list as ic loop
+					list.extend (ic.item.debug_output)
+				end
+				RESULT := list
+			end
 -- ====================================================================================
 	print_elements (a_list: LIST[STRING])
 				-- Print every elements on `a_list`
@@ -197,4 +219,13 @@ feature --Functions
 					print (ic.item.out + "%N")
 				end
 			end
+-- ====================================================================================
+	print_elements_json (a_list: ARRAY[JSON_STRING])
+				-- Print every elements on `a_list`
+			do
+				across a_list as ic loop
+					print (ic.item.debug_output + "%N")
+				end
+			end
+-- ====================================================================================
 end
