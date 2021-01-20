@@ -69,7 +69,7 @@ feature -- Functions
 			Io.new_line
 			Io.put_string ("Enter command: ")
 			Io.read_line
-			get_load_values
+			get_save_csv_values
 			Io.new_line
 			Io.new_line
 			Io.put_string ("Press any key to go back to start menu...")
@@ -104,6 +104,31 @@ feature -- Functions
 		end
 
 -- ====================================================================================
+
+	save_csv_menu
+		do
+			Io.new_line
+			Io.new_line
+			Io.new_line
+			Io.put_string ("SAVE A CSV FILE %N")
+			Io.new_line
+			Io.put_string ("For usage execute the command with the following syntax... %N")
+			Io.put_string ("save [Name of structure] [Storage Path] %N")
+			Io.new_line
+			Io.new_line
+			Io.put_string ("Enter command: ")
+			Io.read_line
+			get_save_csv_values
+			Io.new_line
+			Io.new_line
+			Io.put_string ("Press any key to go back to start menu...")
+			Io.read_line
+			Io.new_line
+			Io.new_line
+			start_menu
+		end
+
+-- ====================================================================================
 	get_save_json_values
 	local
 		path : STRING
@@ -117,7 +142,28 @@ feature -- Functions
 			identifier := words.at (2)
 			path := words.at (3)
 			temp_collection := json_manager.collections.get_collection(identifier)
-			json_manager.file_manager.write_file(path,temp_collection.get_collection_as_string)
+			json_manager.file_manager.write_file(path,temp_collection.get_collection_as_string_json)
+			Io.new_line
+			Io.put_string("Saving collection as a JSON file at: "+path)
+
+
+		end
+
+-- ====================================================================================
+	get_save_csv_values
+	local
+		path : STRING
+		identifier : STRING
+		words : ARRAYED_LIST [STRING]
+		temp_collection : JSON_COLLECTION
+		do
+			create words.make(0)
+			words := get_words(io.last_string)
+
+			identifier := words.at (2)
+			path := words.at (3)
+			temp_collection := json_manager.collections.get_collection(identifier)
+			json_manager.file_manager.write_file(path,temp_collection.get_collection_as_string_csv)
 			Io.new_line
 			Io.put_string("Saving collection as a JSON file at: "+path)
 

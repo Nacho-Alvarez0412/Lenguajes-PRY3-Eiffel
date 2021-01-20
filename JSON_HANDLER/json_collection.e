@@ -160,13 +160,28 @@ feature --Functions
 			io.put_string("End of Collection"+"%N")
 	    end
 -- ====================================================================================
-	get_collection_as_string : STRING
+	get_collection_as_string_json : STRING
 	local
 		text : STRING
 
 		do
 			create text.make_empty
 			text.append("["+"%N")
+	    	across documents as document loop
+			    text.append(document.item.representation +","+ "%N")
+			end
+			text.remove_tail (2)
+			text.append("%N"+"]")
+			RESULT := text
+		end
+
+-- ====================================================================================
+	get_collection_as_string_csv : STRING
+	local
+		text : STRING
+
+		do
+			create text.make_empty
 	    	across documents as document loop
 			    text.append(document.item.representation +","+ "%N")
 			end
