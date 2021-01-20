@@ -16,6 +16,7 @@ feature  -- Initialization
 	identifier : STRING
 	documents : ARRAYED_LIST [JSON_OBJECT]
 	file_by_line : ARRAYED_LIST [STRING]
+	types : ARRAYED_LIST [STRING]
 
 
 	make(collection_info : ARRAYED_LIST [STRING] ; id : STRING )
@@ -33,27 +34,26 @@ feature  -- Initialization
 		do
 			create documents.make (0)
 			create file_by_line.make(0)
+			create types.make(0)
 			create identifier.make_from_string ("")
 		end
 
 
 feature --Functions
 -- ====================================================================================
-	create_json (headers: ARRAYED_LIST [STRING]; types: ARRAYED_LIST [STRING];values: ARRAYED_LIST [STRING]) : JSON_OBJECT
+	create_json (headers: ARRAYED_LIST [STRING];values: ARRAYED_LIST [STRING]) : JSON_OBJECT
 	    local
 	    	json: JSON_OBJECT
 	    	i: INTEGER_32
 	    	max: INTEGER_32
 	    	temp_header: JSON_STRING
-	    	temp_number: STRING
-	    	temp_value: JSON_VALUE
-	    	fd: FORMAT_DOUBLE
+
+
 
 
 
 	    	do
 	    		create json.make_empty
-	    		create fd.make (10, 2)
 	    		from
 				    i := 1
 				    max := headers.capacity
@@ -82,7 +82,6 @@ feature --Functions
 	    			-- Creates new collection to add to the hash table
 	    local
 	    	headers: ARRAYED_LIST [STRING]
-	    	types: ARRAYED_LIST [STRING]
 	    	temp_json: JSON_OBJECT
 	    	i : INTEGER
 	    	max : INTEGER
@@ -98,7 +97,7 @@ feature --Functions
 			until
 			    i = max
 			loop
-			    temp_json := create_json(headers,types,get_values(file_by_line.at (i)))
+			    temp_json := create_json(headers,get_values(file_by_line.at (i)))
 			    documents.extend (temp_json)
 			    i := i + 1
 			end
@@ -176,21 +175,79 @@ feature --Functions
 		end
 
 -- ====================================================================================
-	get_collection_as_string_csv
+	get_collection_as_string_csv : STRING
 	local
 		text : STRING
-		headers : ARRAYED_LIST[STRING]
-		types : ARRAYED_LIST[STRING]
+		headers : ARRAYED_LIST [STRING]
+		content : STRING
 
 		do
 			create text.make_empty
 			create headers.make (0)
-			create types.make (0)
+			create content.make_empty
 
 			headers := get_headers
-	    	print_elements(headers)
+			content := get_contents(headers)
+	    	text.append (join(headers))
+	    	text.append (join(types))
+	    	text.append (content)
+	    	RESULT := text
 		end
--- ====================================================================================		
+
+-- ====================================================================================
+
+	join(list : ARRAYED_LIST[STRING]) : STRING
+	local
+		text : STRING
+		do
+			create text.make_empty
+			across list  as element loop
+				text.append (element.item+";")
+			end
+			text.remove_tail (1)
+			text.append ("%N")
+			RESULT := text
+		end
+
+-- ====================================================================================	
+
+	get_contents(headers : ARRAYED_LIST[STRING]) : STRING
+	local
+		text : STRING
+		temp_header : JSON_STRING
+		fd : FORMAT_DOUBLE
+		temp_number : STRING
+		temp_value : STRING
+		do
+			create text.make_empty
+			create fd.make (10, 2)
+
+			across documents as document loop
+			    across headers as header loop
+					create temp_header.make_from_string (header.item)
+					if attached document.item.item (temp_header) as value  then
+						create temp_value.make_empty
+						if value.is_number then
+							create temp_number.make_empty
+							temp_number := fd.formatted (value.representation.to_real_64)
+							temp_number.adjust
+							text.append(temp_number)
+						else
+							temp_value := value.representation
+							temp_value.remove_tail (1)
+							temp_value.remove_head (1)
+							text.append (temp_value)
+						end
+					end
+					text.append (";")
+				end
+				text.remove_tail (1)
+				text.append ("%N")
+			end
+			RESULT := text
+		end
+
+-- ====================================================================================			
 		get_headers : ARRAYED_LIST[STRING]
 		local
 			temp_document : JSON_OBJECT

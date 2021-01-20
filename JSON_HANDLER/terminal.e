@@ -163,10 +163,10 @@ feature -- Functions
 			identifier := words.at (2)
 			path := words.at (3)
 			temp_collection := json_manager.collections.get_collection(identifier)
-			temp_collection.get_collection_as_string_csv
-			--json_manager.file_manager.write_file(path,temp_collection.get_collection_as_string_csv)
+
+			json_manager.file_manager.write_file(path,temp_collection.get_collection_as_string_csv)
 			Io.new_line
-			Io.put_string("Saving collection as a JSON file at: "+path)
+			Io.put_string("Saving collection as a CSV file at: "+path)
 
 
 		end
