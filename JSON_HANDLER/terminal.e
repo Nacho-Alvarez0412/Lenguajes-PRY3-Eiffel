@@ -80,6 +80,29 @@ feature -- Functions
 		end
 
 -- ====================================================================================
+	select_menu
+		do
+			Io.new_line
+			Io.new_line
+			Io.new_line
+			Io.put_string ("SELECT MENU %N")
+			Io.new_line
+			Io.put_string ("For usage execute the command with the following syntax... %N")
+			Io.put_string ("select [Name of Collection] [New JSON] [Llave] = [Valor] %N")
+			Io.new_line
+			Io.new_line
+			Io.put_string ("Enter command: ")
+			Io.read_line
+			get_select_values
+			Io.new_line
+			Io.new_line
+			Io.put_string ("Press any key to go back to start menu...")
+			Io.read_line
+			Io.new_line
+			Io.new_line
+			start_menu
+		end
+-- ====================================================================================
 	save_json_menu
 		do
 			Io.new_line
@@ -126,6 +149,13 @@ feature -- Functions
 			Io.new_line
 			Io.new_line
 			start_menu
+		end
+
+-- ====================================================================================
+
+	get_select_values
+		do
+			
 		end
 
 -- ====================================================================================
