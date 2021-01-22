@@ -41,15 +41,27 @@ feature  -- Initialization
 
 feature --Functions
 -- ====================================================================================
-	create_json (headers: ARRAYED_LIST [STRING];values: ARRAYED_LIST [STRING]) : JSON_OBJECT
+	set_identifier(id : STRING)
+		do
+			identifier := id
+		end
+-- ====================================================================================
+	add_document(document : JSON_OBJECT)
+		do
+			documents.extend (document)
+		end
+-- ====================================================================================
+	set_types(new_types : ARRAYED_LIST [STRING])
+		do
+			types := new_types
+		end
+-- ====================================================================================
+	create_json (headers: ARRAYED_LIST [STRING]; values: ARRAYED_LIST [STRING]) : JSON_OBJECT
 	    local
 	    	json: JSON_OBJECT
 	    	i: INTEGER_32
 	    	max: INTEGER_32
 	    	temp_header: JSON_STRING
-
-
-
 
 
 	    	do

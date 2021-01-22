@@ -78,6 +78,86 @@ feature --Functions
 		end
 
 -- ====================================================================================
+	select_collection(identifier : STRING; new_coll_id : STRING ; key : STRING ; search_value : STRING) : JSON_COLLECTION
+	local
+		json_key : JSON_STRING
+		selected_collection : JSON_COLLECTION
+		result_collection : JSON_COLLECTION
+		temp_document : JSON_OBJECT
+
+
+		do
+			create json_key.make_from_string (key)
+			create result_collection.make_empty
+			selected_collection := get_collection(identifier)
+			result_collection.set_identifier (new_coll_id)
+			result_collection.set_types(selected_collection.types)
+
+
+			across selected_collection.documents as document loop
+				if attached document.item.item (json_key) as value then
+
+					if match_checker(value,search_value)  then
+
+						result_collection.add_document (document.item)
+					end
+				end
+			end
+			Io.new_line
+			Io.put_string ("Query Result:")
+			Io.new_line
+			result_collection.print_collection
+
+			RESULT := result_collection
+
+		end
+
+-- ====================================================================================
+	match_checker(value : JSON_VALUE ; search_value : STRING) : BOOLEAN
+	local
+		temp_string_value : STRING
+		flag : BOOLEAN
+		fd: FORMAT_DOUBLE
+
+
+		do
+			create fd.make (10, 2)
+			flag := FALSE
+
+			if value.is_number then
+				temp_string_value := fd.formatted (value.representation.to_real_64)
+				temp_string_value.adjust
+
+				if temp_string_value.is_equal (search_value) then
+					flag := TRUE
+				end
+			elseif value.is_string then
+
+				if string_formatter(value.representation).is_equal (search_value) then
+					flag := TRUE
+				end
+			elseif value.is_null then
+				print("Im a null")
+			else
+				if(boolean_formatter(search_value).is_equal(value.representation)) then
+					flag := TRUE
+				end
+			end
+
+			RESULT:= flag
+		end
+-- ====================================================================================
+
+	boolean_formatter(value : STRING) : STRING
+		do
+			if value.is_equal ("S") then
+				RESULT := "true"
+			else
+				RESULT := "false"
+			end
+		end
+
+-- ====================================================================================
 	is_in_hash(identifier : STRING) : BOOLEAN
 	local
 		flag : BOOLEAN
@@ -90,6 +170,16 @@ feature --Functions
 		end
 		RESULT:= flag
 	end
+
+-- ====================================================================================
+
+	string_formatter(string : STRING) : STRING
+		do
+			string.remove_head (1)
+			string.remove_tail (1)
+			RESULT := string
+		end
+
 -- ====================================================================================
 	print_hash
 	do
@@ -99,7 +189,7 @@ feature --Functions
 	end
 
 -- ====================================================================================
-	get_colleciton_quantity() : INTEGER
+	get_colleciton_quantity : INTEGER
 		    local
 		    	max : INTEGER
 		    do

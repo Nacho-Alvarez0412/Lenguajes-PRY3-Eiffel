@@ -54,6 +54,26 @@ feature -- Functions
 
 		end
 -- ====================================================================================
+
+	store_collection(collection : JSON_COLLECTION)
+
+			do
+				if collections.add_collection (collection)
+				then
+					io.put_new_line
+				    io.put_string("Colleciton added successfully"+ "%N")
+				    io.put_new_line
+				    io.put_string("Collection content..."+"%N")
+				    collection.print_collection
+				else
+					io.put_new_line
+				    io.put_string("Colleciton already exists in HashTable"+ "%N")
+				    io.put_new_line
+				end
+
+			end
+
+-- ====================================================================================
 	reset_load
 		do
 			file_manager.file_by_line.chain_wipe_out

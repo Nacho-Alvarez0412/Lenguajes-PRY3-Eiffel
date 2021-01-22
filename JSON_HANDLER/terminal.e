@@ -38,6 +38,7 @@ feature -- Functions
 			Io.put_string ("Select an option (Choose a number from 1-6):  ")
 			Io.read_integer
 
+
 			if Io.last_integer = 1 then
 				load_csv_menu
 			elseif Io.last_integer = 2 then
@@ -45,7 +46,7 @@ feature -- Functions
 			elseif Io.last_integer = 3 then
 				save_csv_menu
 			elseif Io.last_integer = 4 then
-				print("about to realize a query")
+				select_menu
 			elseif Io.last_integer = 5 then
 				print("about to project a JSON")
 			elseif Io.last_integer = 6 then
@@ -85,7 +86,7 @@ feature -- Functions
 			Io.new_line
 			Io.new_line
 			Io.new_line
-			Io.put_string ("SELECT MENU %N")
+			Io.put_string ("SELECT QUERY MENU %N")
 			Io.new_line
 			Io.put_string ("For usage execute the command with the following syntax... %N")
 			Io.put_string ("select [Name of Collection] [New JSON] [Llave] = [Valor] %N")
@@ -154,8 +155,19 @@ feature -- Functions
 -- ====================================================================================
 
 	get_select_values
+	local
+		identifier : STRING
+		values : ARRAYED_LIST [STRING]
+		new_collection : JSON_COLLECTION
 		do
-			
+			create values.make(0)
+			values := get_words(io.last_string)
+			values := get_select_words(values)
+			new_collection := json_manager.collections.select_collection(values.at (2),values.at (3),values.at (4),values.at (5))
+			json_manager.store_collection(new_collection)
+
+
+
 		end
 
 -- ====================================================================================
@@ -246,5 +258,46 @@ feature -- Functions
 			words.extend (word)
 			RESULT := words
 		end
+-- ====================================================================================
+
+	get_select_words(words : ARRAYED_LIST [STRING]) : ARRAYED_LIST [STRING]
+	local
+		words_res : ARRAYED_LIST [STRING]
+		word : STRING
+		size : INTEGER
+		i : INTEGER
+		do
+			create words_res.make(0)
+			create word.make_empty
+			size := words.count
+
+			from
+			    i := 1
+			until
+			    i > size
+			loop
+			    if i <= 4 then
+			    	words_res.extend (words.at (i))
+			    elseif i > 5 then
+			    	word.append (" "+words.at (i))
+			    end
+			    i := i + 1
+			end
+
+			if not (word.is_empty) then
+				word.remove_head (1)
+				words_res.extend (word)
+			end
+			RESULT := words_res
+		end
+
+-- ====================================================================================
+	print_elements (a_list: LIST[STRING])
+				-- Print every elements on `a_list`
+			do
+				across a_list as ic loop
+					print (ic.item.out + "%N")
+				end
+			end
 -- ====================================================================================
 end
