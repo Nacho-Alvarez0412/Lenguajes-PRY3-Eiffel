@@ -62,6 +62,7 @@ feature --Functions
 	    	i: INTEGER_32
 	    	max: INTEGER_32
 	    	temp_header: JSON_STRING
+	    	json_null : JSON_NULL
 
 
 	    	do
@@ -74,7 +75,10 @@ feature --Functions
 				loop
 					create temp_header.make_from_string (headers.at (i))
 
-				    if types.at(i).is_equal ("X") then
+					if values.at (i).is_equal ("")  then
+						json.put (json_null, temp_header)
+
+				    elseif types.at(i).is_equal ("X") then
 					    json.put_string (values.at(i),temp_header)
 
 					elseif types.at(i).is_equal ("N") then
@@ -244,6 +248,8 @@ feature --Functions
 							temp_number := fd.formatted (value.representation.to_real_64)
 							temp_number.adjust
 							text.append(temp_number)
+						elseif value.is_null then
+							text.append ("")
 						else
 							temp_value := value.representation
 							temp_value.remove_tail (1)
