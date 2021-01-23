@@ -76,6 +76,32 @@ feature --Functions
 			end
 			RESULT := i
 		end
+-- ====================================================================================
+
+	project_collection (identifier : STRING ; new_coll_id : STRING ; atributes : ARRAYED_LIST[STRING]) : JSON_COLLECTION
+	local
+		new_collection : JSON_COLLECTION
+		selected_collection : JSON_COLLECTION
+		temp_json_document : JSON_OBJECT
+		temp_header : JSON_STRING
+	do
+		create new_collection.make_empty
+		selected_collection := get_collection(identifier)
+		new_collection.set_identifier (new_coll_id)
+		new_collection.set_types (selected_collection.get_header_types(atributes))
+
+		across selected_collection.documents as document loop
+			create temp_json_document.make_empty
+			across atributes as atribute loop
+				create temp_header.make_from_string (atribute.item)
+				if attached document.item.item (temp_header) as value then
+					temp_json_document.put (value, temp_header)
+				end
+			end
+			new_collection.add_document (temp_json_document)
+		end
+		RESULT := new_collection
+	end
 
 -- ====================================================================================
 	select_collection(identifier : STRING; new_coll_id : STRING ; key : STRING ; search_value : STRING) : JSON_COLLECTION
@@ -150,7 +176,7 @@ feature --Functions
 
 	boolean_formatter(value : STRING) : STRING
 		do
-			if value.is_equal ("S") then
+			if value.is_equal ("S") or value.is_equal ("s") or value.is_equal ("TRUE") or value.is_equal ("true") or value.is_equal ("True") then
 				RESULT := "true"
 			else
 				RESULT := "false"

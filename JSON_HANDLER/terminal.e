@@ -48,7 +48,7 @@ feature -- Functions
 			elseif Io.last_integer = 4 then
 				select_menu
 			elseif Io.last_integer = 5 then
-				print("about to project a JSON")
+				projection_menu
 			elseif Io.last_integer = 6 then
 				Io.new_line
 				Io.put_string ("Quitting...")
@@ -95,6 +95,30 @@ feature -- Functions
 			Io.put_string ("Enter command: ")
 			Io.read_line
 			get_select_values
+			Io.new_line
+			Io.new_line
+			Io.put_string ("Press any key to go back to start menu...")
+			Io.read_line
+			Io.new_line
+			Io.new_line
+			start_menu
+		end
+
+-- ====================================================================================
+	projection_menu
+		do
+			Io.new_line
+			Io.new_line
+			Io.new_line
+			Io.put_string ("PROJECTION QUERY MENU %N")
+			Io.new_line
+			Io.put_string ("For usage execute the command with the following syntax... %N")
+			Io.put_string ("project [Name of Collection] [New JSON] [Atribute1] ... [Atribute5] %N")
+			Io.new_line
+			Io.new_line
+			Io.put_string ("Enter command: ")
+			Io.read_line
+			get_projection_values
 			Io.new_line
 			Io.new_line
 			Io.put_string ("Press any key to go back to start menu...")
@@ -156,7 +180,6 @@ feature -- Functions
 
 	get_select_values
 	local
-		identifier : STRING
 		values : ARRAYED_LIST [STRING]
 		new_collection : JSON_COLLECTION
 		do
@@ -169,6 +192,28 @@ feature -- Functions
 
 
 		end
+
+-- ====================================================================================
+
+	get_projection_values
+	local
+		values : ARRAYED_LIST [STRING]
+		atributes : ARRAYED_LIST [STRING]
+		new_collection : JSON_COLLECTION
+		do
+			create values.make(0)
+			create atributes.make (0)
+			values := get_words(io.last_string)
+			atributes := cut(values,4)
+
+			new_collection := json_manager.collections.project_collection(values.at (2),values.at (3),atributes)
+			new_collection.print_collection
+			json_manager.store_collection(new_collection)
+
+
+
+		end
+
 
 -- ====================================================================================
 	get_save_json_values
@@ -289,6 +334,25 @@ feature -- Functions
 				words_res.extend (word)
 			end
 			RESULT := words_res
+		end
+
+-- ====================================================================================
+
+	cut(list : ARRAYED_LIST[STRING];i : INTEGER) : ARRAYED_LIST[STRING]
+	local
+		cont : INTEGER
+		temp_list : ARRAYED_LIST[STRING]
+
+		do
+			create temp_list.make (0)
+			cont := 1
+			across list as element loop
+			    if cont >= i  then
+			    	temp_list.extend (element.item)
+			    end
+			    cont := cont +1
+			end
+			RESULT := temp_list
 		end
 
 -- ====================================================================================

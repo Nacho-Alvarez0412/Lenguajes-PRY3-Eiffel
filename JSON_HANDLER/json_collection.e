@@ -41,6 +41,28 @@ feature  -- Initialization
 
 feature --Functions
 -- ====================================================================================
+	get_header_types(atributes : ARRAYED_LIST[STRING]) : ARRAYED_LIST[STRING]
+	local
+		temp_types : ARRAYED_LIST[STRING]
+		headers : ARRAYED_LIST[STRING]
+		cont : INTEGER
+
+		do
+			create temp_types.make (0)
+			cont := 1
+			headers := get_headers
+
+			across headers as header loop
+			    across atributes as atribute loop
+			    	if atribute.item.is_equal (header.item) then
+						temp_types.extend (types.at (cont))
+			    	end
+				end
+				cont := cont +1
+			end
+			RESULT := temp_types
+		end
+-- ====================================================================================
 	set_identifier(id : STRING)
 		do
 			identifier := id
@@ -135,7 +157,7 @@ feature --Functions
 	get_bool_values(string: STRING) : BOOLEAN
 
 		do
-			if string.is_equal ("S")
+			if string.is_equal ("S") or string.is_equal ("SI") or string.is_equal ("si") or string.is_equal ("s")
 			then
 			    RESULT := TRUE
 			else
